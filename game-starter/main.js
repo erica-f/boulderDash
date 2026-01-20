@@ -174,7 +174,7 @@ window.addEventListener("DOMContentLoaded", function () {
   move(1, 1, 'down');
 
   function actionWithTileInFront() {
-    let tileInFront = getTileInFront()
+    let tileInFront = getTileInFront(currentDirection)
 
     // Safety: Om vi inte får tag i en tile (edge of map), stop.
     if (!tileInFront) return;
