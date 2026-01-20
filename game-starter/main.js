@@ -9,6 +9,7 @@ window.addEventListener("DOMContentLoaded", function () {
     top = area.offsetTop,
     posLeft = 0,
     posTop = 0,
+    currentDirection = 'down', // Default direction
     tileSize = 32,
     gridSize = 24,
 
@@ -140,7 +141,7 @@ window.addEventListener("DOMContentLoaded", function () {
    * Move Rockford
   */
 
-  // moveIt() flyttas ut hit 
+  // moveIt() flyttas ut hit så att den kan användas
   function moveIt() {
       rockford.style.left = (area.offsetLeft + posLeft * tileSize + tileSize / 2) + 'px';
       rockford.style.top = (area.offsetTop + posTop * tileSize + tileSize / 2) + 'px';
@@ -149,10 +150,13 @@ window.addEventListener("DOMContentLoaded", function () {
     };
   
   let move = function (moveLeft, moveTop, which) {
-    if (which) { rockford.className = 'baddie ' + which; }
+    if (which) { 
+      rockford.className = 'baddie ' + which; 
+      currentDirection = which; // Behövs för getTileInFront()!
+    }
     let magma_move = new Audio("./sounds/liquid-whoosh-3-185332.mp3");
     magma_move.volume = 0.2;
-    // First if means the baddie can movie
+    // Can the baddie move?
     if (!(gameBlocks[(posLeft + moveLeft) + (posTop + moveTop) * gridSize] - 10)) {
       posLeft += moveLeft;
       posTop += moveTop;
