@@ -101,6 +101,41 @@ window.addEventListener("DOMContentLoaded", function () {
   let backgroundAudio = new Audio('./sounds/the-sound-of-hell-21703.mp3');
   backgroundAudio.volume = 0.005;
   backgroundAudio.play();
+
+  function getTileInFront(baddieDirection) {
+      let xStep, yStep = 0;
+      // Om vår karaktär kollar höger blir steget han potentiellt kommer ta 1 i x-led
+      // Kollar han nedåt blir steget -1 i y-led etc
+      switch (baddieDirection) {
+            case 'left': xStep = -1; break;
+            case 'right': xStep = 1; break;
+            case 'up': yStep = -1; break;
+            case 'down': yStep = 1; break;
+        }
+      
+      // Detta är var karaktären skulle hamna *om* han tar steget
+      // Essentially: Current Location (posLeft för x-led och posTop för y-led) + The Step = The Target Tile
+      const x = posLeft + xStep;
+      const y = posTop + yStep;
+
+      // Boundary detection!
+      if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
+            return null; // null är det säkraste värdet vi kan returnera utan att programmet kraschar
+        }
+      
+      // *Flatten* 2D-koordinaten: gör om 2D-positionen till ett 1D-index enligt
+      // T.ex. om vi har en gridSize på 40 och vi står på the fourth tile i den tredje raden står på tile med index 83 (0-index!)
+      const blockInFrontIndex = x + y * gridSize;
+      const blockInFront = gameBlocks[blockInFrontIndex];
+
+      // Returnera all info vi kan få, även om vi inte använder det. Det finns tillgängligt haha!
+      return { 
+        inx: blockInFrontIndex, 
+        block: blockInFront, 
+        ground: gameArea[blockInFrontIndex] 
+      };
+  }
+
   /**
    * Move Rockford
   */
@@ -283,6 +318,24 @@ window.addEventListener("DOMContentLoaded", function () {
     };
     console.log('Keypress: ' + event + ' key: ' + key + ' new pos: ' + rockford.offsetLeft + ', ' + rockford.offsetTop);
   };
+
+  /**
+ * För att kunna interagera med objekt framför en med Enter!
+ * Vi kollar inte vilken/vilka knappar som hålls *ner* (onkeydown) utan vilken som precis trycks (onkeyup)
+ */
+  document.onkeyup = function (event) {
+    let key = event.key; 
+
+    switch (key) {
+        case 'Enter': 
+            // action(); // Ska implementeras i nästa commit
+            console.log('Enter har tryckts!'); 
+            break;
+        case 'Escape':
+            console.log('Spelet har pausats!'); // Idé för framtiden
+            break;
+    }
+}
 
   console.log('Everything is ready.');
 });
