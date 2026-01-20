@@ -202,6 +202,7 @@ window.addEventListener("DOMContentLoaded", function () {
       drawGamePlan(gameArea, gameBlocks);   // Redraws the board, with the removed club
       rockford = document.getElementById('baddie1');
       alert("Du har nu en farlig klubba i händerna!")
+      moveIt(); // Sync vår position där vi tröck Enter; vi teleporteras till (0,0) utan denna!
 
     } else if (block == 61) {
         if (hasClub) {
