@@ -139,15 +139,16 @@ window.addEventListener("DOMContentLoaded", function () {
   /**
    * Move Rockford
   */
-  let move = function (moveLeft, moveTop, which) {
 
-
-    function moveIt() {
+  // moveIt() flyttas ut hit 
+  function moveIt() {
       rockford.style.left = (area.offsetLeft + posLeft * tileSize + tileSize / 2) + 'px';
       rockford.style.top = (area.offsetTop + posTop * tileSize + tileSize / 2) + 'px';
       //  console.log("
       // Moved to: " + rockford.style.left + "x" + rockford.style.top);
     };
+  
+  let move = function (moveLeft, moveTop, which) {
     if (which) { rockford.className = 'baddie ' + which; }
     let magma_move = new Audio("./sounds/liquid-whoosh-3-185332.mp3");
     magma_move.volume = 0.2;
@@ -156,7 +157,23 @@ window.addEventListener("DOMContentLoaded", function () {
       posLeft += moveLeft;
       posTop += moveTop;
       moveIt();
-    } else if (gameBlocks[(posLeft + moveLeft) + (posTop + moveTop) * gridSize] == 63) {
+    }
+    else {  // Else means the baddie cannot move because of a wall
+      console.log('Block detected, cant move.');
+    }
+    // console.log("area.offsetLeft", area.offsetLeft);
+    // console.log("area.offsetTop", area.offsetTop);
+    // console.log("posLeft", posLeft)
+    // console.log("posTop", posTop)
+  };
+  console.log('Moving Mickey Mos (Rockford) to initial spot.');
+  move(1, 1, 'down');
+
+  function actionWithTileInFront() {
+    let tileInFront = getTileInFront()
+
+    if (tileInFront == 63) {
+      console.log("Enter har tryckts med klubban framför oss!")
       hasClub = true;
       let pickup = new Audio('./sounds/paper-collect-6-186720.mp3');
       pickup.volume = 0.8;
@@ -166,7 +183,6 @@ window.addEventListener("DOMContentLoaded", function () {
       drawGamePlan(gameArea, gameBlocks);   // Redraws the board, with the removed club
       rockford = document.getElementById('baddie1');
       alert("Du har nu en farlig klubba i händerna!")
-      moveIt()
     } else if (gameBlocks[(posLeft + moveLeft) + (posTop + moveTop) * gridSize] == 61) {
       if (hasClub) {
         // alert("Du slår ner trollet. Riktigt våldsamt och blodigt. ")
@@ -290,17 +306,7 @@ window.addEventListener("DOMContentLoaded", function () {
         rockford.style.backgroundImage = "url('./img/red_devil_new.png')";
         moveIt()
       }
-    }
-    else {  // Else means the baddie cannot move because of a wall
-      console.log('Block detected, cant move.');
-    }
-    // console.log("area.offsetLeft", area.offsetLeft);
-    // console.log("area.offsetTop", area.offsetTop);
-    // console.log("posLeft", posLeft)
-    // console.log("posTop", posTop)
-  };
-  console.log('Moving Mickey Mos (Rockford) to initial spot.');
-  move(1, 1, 'down');
+  }
 
 
   /**
@@ -328,7 +334,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     switch (key) {
         case 'Enter': 
-            // action(); // Ska implementeras i nästa commit
+            actionWithTileInFront();
             console.log('Enter har tryckts!'); 
             break;
         case 'Escape':
@@ -339,11 +345,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
   console.log('Everything is ready.');
 });
-
-
-
-
-
 
 
 
