@@ -154,6 +154,15 @@ window.addEventListener("DOMContentLoaded", function () {
     if (which) { 
       rockford.className = 'baddie ' + which; 
       currentDirection = which; // Behövs för getTileInFront()!
+
+      // --- VISUAL DEBUG HELP ---
+      // Reset borders
+      rockford.style.border = "none";
+      // Add a red line on the side we are facing
+      if (which === 'left') rockford.style.borderLeft = "4px solid red";
+      if (which === 'right') rockford.style.borderRight = "4px solid red";
+      if (which === 'up') rockford.style.borderTop = "4px solid red";
+      if (which === 'down') rockford.style.borderBottom = "4px solid red";
     }
     
     // Can the baddie move?
@@ -334,7 +343,7 @@ window.addEventListener("DOMContentLoaded", function () {
       case 39: move(1, 0, 'right'); break;
       case 38: move(0, -1, 'up'); break;
       case 40: move(0, 1, 'down'); break;
-      default: move(0, 0, 'down'); break;
+      // default: move(0, 0, 'down'); break; Behövs inte och saboterar vår "Enter listener"
     };
     console.log('Keypress: ' + event + ' key: ' + key + ' new pos: ' + rockford.offsetLeft + ', ' + rockford.offsetTop);
   };
