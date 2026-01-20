@@ -105,7 +105,7 @@ window.addEventListener("DOMContentLoaded", function () {
   magma_move.volume = 0.2;
 
   function getTileInFront(baddieDirection) {
-      let xStep, yStep = 0;
+      let xStep = 0, yStep = 0;
       // Om vår karaktär kollar höger blir steget han potentiellt kommer ta 1 i x-led
       // Kollar han nedåt blir steget -1 i y-led etc
       switch (baddieDirection) {
